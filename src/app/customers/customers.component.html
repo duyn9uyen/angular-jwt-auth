@@ -1,4 +1,13 @@
 <h1>Customers</h1>
-<ul>
-  <li *ngFor="let cust of customers">{{ cust }}</li>
-</ul>
+
+<div>
+  <span>Only Admins can see list of customers.</span>
+  <ul *ngIf="customers">
+    <li *ngFor="let cust of customers">{{ cust }}</li>
+  </ul>
+</div>
+<br>
+<div *ngIf="!customers">
+  <span style="color: red;">If are seeing this if you are unauthorized. (Not an Admin)</span>
+</div>
+
