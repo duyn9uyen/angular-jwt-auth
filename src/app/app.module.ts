@@ -4,13 +4,16 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { JwtModule } from "@auth0/angular-jwt";
 
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { CustomersComponent } from './customers/customers.component';
 import { AppComponent } from './app.component';
 
-
+export function tokenGetter() {
+  return localStorage.getItem("jwt");
+}
 
 @NgModule({
   declarations: [
@@ -26,8 +29,18 @@ import { AppComponent } from './app.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
       { path: 'login', component: LoginComponent },
-      { path: 'customers', component: CustomersComponent },
-    ])
+      { path: 'customers', component: CustomersComponent, canActivate: [AuthGuard] }, //Added this authguard we created in auth-guard.service.ts
+    ]),
+    // We inject the JwtModule and configure it to use the tokenGetter function
+    // to retrieve the token from the local storage and to include it into any
+    // Http request executed by the HttpClientModule.
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        whitelistedDomains: ["localhost:5000"],
+        blacklistedRoutes: []
+      }
+    })
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]
