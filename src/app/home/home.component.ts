@@ -24,9 +24,14 @@ export class HomeComponent {
     }
   }
 
-  logOut() {
-    //This is the name of the item we saved in the login.ts
+  // logOut() {
+  //   //This is the name of the item we saved in the login.ts
+  //   localStorage.removeItem("jwt");
+  // }
+
+  public logOut = () => {
     localStorage.removeItem("jwt");
+    localStorage.removeItem("refreshToken");
   }
 
 }
